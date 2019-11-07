@@ -18,15 +18,17 @@ for iiter = 1:iternum
     %%%%%%%%%%%%%%%% Gaussian x %%%%%%%%%%%%%%%
     mux = zeros(Dim,1);
     Sigx = eye(Dim);
-    trData = mvnrnd(mux', Sigx, datanum)';
+    % trData = mvnrnd(mux', Sigx, datanum)';
+    load('trData.mat')
     tstPtAngle = 30;    % good for 3-D - 1
     tstPt = 1*[cos(tstPtAngle/180*pi) sin(tstPtAngle/180*pi) zeros(1,Dim - 2)]';
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Wvec = [5;zeros(Dim - 1,1)];    % good for 3-D - 1
     yIntersect = 0;
-    trYs = Wvec'*trData + yIntersect + randn(1,datanum)*sqrt(ySigSq);
-    trueTstYs = Wvec'*tstPt + yIntersect;
-    tstYs = trueTstYs + randn(1)*sqrt(ySigSq);
+    % trYs = Wvec'*trData + yIntersect + randn(1,datanum)*sqrt(ySigSq); %hv: y_train = w^T x_train + N(0,\sigma^2* I) 
+    load('trYs.mat')
+    trueTstYs = Wvec'*tstPt + yIntersect; % hv: ture y of 1 test point
+    tstYsd = trueTstYs + randn(1)*sqrt(ySigSq);
 
     for ibandWidthIdx = 1:size(hbandwidths,2)
         hbandwidth = hbandwidths(ibandWidthIdx);
